@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 
 const images = [
+  { src: "/images/bp.jpg", name: "bp" },
   { src: "/images/grid.jpg", name: "grid" }
 ];
 
@@ -47,23 +48,27 @@ function App() {
       {currentImage.src && (
         <div className="game-area">
           <div className="image-container">
-            {hiddenGrid.map((hidden, index) => (
+          {hiddenGrid.map((hidden, index) => {
+            const row = Math.floor(index / 4); 
+            const col = index % 4; 
+
+            return (
               <div
                 key={index}
                 className={`index-${index} tile ${hidden ? "hidden" : ""}`}
                 style={{
-                  top: `${Math.floor(index / 4) * 25}%`,  
-                  left: `${(index % 4) * 25}%`,  
-                  width: "25%",  
-                  height: "25%",  
-                  backgroundImage: hidden ? "none" : `url(${currentImage.src})`,
+                  top: `${row * 25}%`, 
+                  left: `${col * 25}%`, 
+                  width: "25%", 
+                  height: "25%", 
+                  backgroundImage: hidden ? "none" : `url(${currentImage.src})`, 
                   backgroundSize: "400%", 
-                  backgroundPosition: `${-(index % 4) * 25}% ${-Math.floor(index / 4) * 25}%`  
-                  
+                  backgroundPosition: `${-col * 100}% ${-row * 100}%` 
                 }}
                 onClick={() => revealTile(index)}
               ></div>
-            ))}
+            );
+          })}
             <img src={currentImage.src} alt="game" style={{ visibility: "hidden" }} />
           </div>
           <div className="controls">
